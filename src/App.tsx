@@ -19,7 +19,7 @@ function App() {
             <Route path='/' element={<MainScreen />} />
             <Route path='checkresults' element={<CheckResults />} />
             <Route path='results' element={<Results />} />
-            <Route path='clientlist' element={<Clientlist  />} />
+            <Route path='clientlist' element={<Clientlist />} />
             <Route path='checkappointment' element={<CheckAppointment />} />
             
           </Routes>

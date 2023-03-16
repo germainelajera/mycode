@@ -1,100 +1,150 @@
-import "../CSS/ComponentCSS.css"
-import { ConstructionOutlined } from "@mui/icons-material";
-import { Component, useState } from "react";
-import ResultService from "../Services/ResultService";
 import React from "react";
-import { Button, Stack, Modal, Box } from "@mui/material";
-import { useFetcher } from "react-router-dom";
+import ResultService from "../Services/ResultService";
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
-
 class ReadResult extends React.Component {
-    
-    constructor(props){
-        super(props)
-        this.state = {
-            result: [],
-            chosenResult: Object,
-            chosenRecord: Object,
-            open: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      result: [],
+      chosenResult: Object,
+      chosenRecord: Object,
+      open: false,
+      sortByDateAsc: true, // added state to track date sorting order
+    };
+  }
+
+  componentDidMount() {
+    ResultService.getAllResult().then((response) => {
+      this.setState({ result: response.data });
+    });
+  }
+
+  handleOpen = () => this.setState({ open: true });
+  handleClose = () => this.setState({ open: false });
+
+  sortByName = () => {
+    const { sortByNameOrder } = this.state; // get current sorting order
+    const sortedResult = [...this.state.result].sort((a, b) =>
+      sortByNameOrder === 'asc'
+        ? a.resultname.localeCompare(b.resultname)
+        : b.resultname.localeCompare(a.resultname) // sort in descending order if order is 'desc'
+    );
+    this.setState({
+      result: sortedResult,
+      sortByNameOrder: sortByNameOrder === 'asc' ? 'desc' : 'asc', // toggle sorting order
+    });
+  };
+
+  sortByDate = () => {
+    const sortedResult = this.state.result.sort((a, b) => {
+      const dateA = new Date(a.resultdate);
+      const dateB = new Date(b.resultdate);
+      if (this.state.sortByDateAsc) {
+        return dateA - dateB;
+      } else {
+        return dateB - dateA;
+      }
+
+    });
+    this.setState((prevState) => ({
+      result: sortedResult,
+      sortByDateAsc: !prevState.sortByDateAsc, // toggle sorting order
+    }));
+  };
+
+  sortByID = () => {
+    const sortedResult = this.state.result.sort((a, b) => {
+        if (this.state.sortByIDAsc) {
+            return a.resultid - b.resultid;
+        } else {
+            return b.resultid - a.resultid;
         }
-    }
+    });
+    this.setState({ result: sortedResult, sortByIDAsc: !this.state.sortByIDAsc });
+}
 
-    componentDidMount(){
-        ResultService.getAllResult().then((response) =>{
-            this.setState({result: response.data})
-        });
-    }
+  StyledSortButton = styled(Button)(() => ({
+    backgroundColor: "#FF4B4B",
+    fontSize: "18px",
+    position: "absolute",
+    left: "160px",
+    top: "160px",
+  }));
 
-    
-    handleOpen = () => this.setState({ open: true });
-    handleClose = () => this.setState({ open: false });
+  StyledDateButton = styled(Button)(() => ({
+    backgroundColor: "#FF4B4B",
+    fontSize: "18px",
+    position: "absolute",
+    left: "350px",
+    top: "160px",
+  }));
 
-    StyledButton = styled(Button)(() => ({
-        backgroundColor: '#FF4B4B',
-        fontSize: '18px',
-        position: "absolute",
-        left: "160px",
-        top: "160px",
+  StyledPatientIDButton = styled(Button)(() => ({
+    backgroundColor: "#FF4B4B",
+    fontSize: "18px",
+    position: "absolute",
+    left: "464px",
+    top: "160px",
+  }));
 
-        
-    }));
+  StyledViewButton = styled(Button)(() => ({
+    backgroundColor: "#FF4B4B",
+    fontSize: "18px",
+    height: "30px",
+    color: "white",
+  }));
 
-    StyledViewButton = styled(Button)(() => ({
-        backgroundColor: '#FF4B4B',
-        fontSize: '18px',
-        height: '30px',
-        color: 'white',
-
-    }));
-
-    
-    render(){
-
-            return(
-                <div>   
-                    
-
-                    <this.StyledButton variant="contained" >
-                        Filter by Name
-                    </this.StyledButton>
-                    <table className="table table-striped">
-                        <thead>
-                            <br/><br/>
-                            <tr className="table table-striped">
-                            
-                                <th className="table table-striped">PATIENT ID</th>
-                                <th>PATIENT NAME</th>
-                                <th>RESULT DATE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                
-                                this.state.result.map(result =>
-                                    <tr key = {result.resultid} style={{border: "1"}}>
-                                        <td  className="table table-striped"> {result.resultid}</td>
-                                        <td > {result.resultname}</td>
-                                        <td > {result.resultdate}</td>
-                                        <td style={{border: 'none'}}>
-                                            <this.StyledViewButton onClick={() => {
-                                                this.handleOpen();
-                                                this.setState({
-                                                        chosenResult: result, chosenRecord: result.record
-                                                });
-                                            }}>
-                                                        View Result
-                                                    </this.StyledViewButton>
-                                                    
-
-                                        </td>
-                                    </tr>
-                                    
-                                    
-                                )
-                            }
-                        </tbody>
-                    </table>
+  render() {
+    return (
+      <div>
+        <Stack direction="row" spacing={2}>
+        <this.StyledSortButton variant="contained" onClick={this.sortByName}>
+            Sort by Name {this.state.sortByNameOrder === 'asc' ? '▼' : '▲'}
+          </this.StyledSortButton>
+          <this.StyledDateButton variant="contained" onClick={this.sortByDate}>
+            {this.state.sortByDateAsc ? ' Date ▼' : ' Date ▲'}
+          </this.StyledDateButton>
+          <this.StyledPatientIDButton variant="contained" onClick={this.sortByID}>
+          {this.state.sortByIDAsc ? ' ID ▼' : ' ID ▲'}
+            </this.StyledPatientIDButton>
+        </Stack>
+        <table className="table table-striped">
+          <thead>
+            <br />
+            <br />
+            <tr className="table table-striped">
+              <th className="table table-striped">PATIENT ID</th>
+              <th>PATIENT NAME</th>
+              <th>RESULT DATE</th>
+            </tr>
+          </thead>
+          <tbody>
+                        {
+                            this.state.result.map(result =>
+                                <tr key={result.resultid} style={{border: "1"}}>
+                                    <td  className="table table-striped"> {result.resultid}</td>
+                                    <td > {result.resultname}</td>
+                                    <td > {result.resultdate}</td>
+                                    <td style={{border: 'none'}}>
+                                        <this.StyledViewButton onClick={() => {
+                                            this.handleOpen();
+                                            this.setState({
+                                                chosenResult: result, chosenRecord: result.record
+                                            });
+                                        }}>
+                                            View Result
+                                        </this.StyledViewButton>
+                                    </td>
+                                </tr>
+                            )
+                        }
+                    </tbody>
+                </table>
                     <Modal open={this.state.open} onClose={this.handleClose} >
                         <Box
                             sx={{

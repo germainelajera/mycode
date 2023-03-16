@@ -27,26 +27,6 @@ export default function CheckAppointments (){
 
     return (
         <div>
-            <Box sx={{ minWidth: 120 }}>
-      <FormControl sx={{borderRadius: 1, bgcolor: "#FF4B4B", marginTop: "50px", width: 120, position:"absolute", left:"150px"}}>
-        <InputLabel id="demo-simple-select-label">Schedule</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value={10}>Previous</MenuItem>
-          <MenuItem value={20}>Current</MenuItem>
-          
-        </Select>
-      </FormControl>
-    </Box>
-      
-            <div>
-                
-            </div>
 
             <h1 style={{ color: "#FF4B4B", marginBottom: "50px" }}>
                 Schedules

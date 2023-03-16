@@ -58,8 +58,14 @@ td{
 .AppBar{
     font-family: 'Sarala', sans-serif;
     color: white;
+    color: #ffffff;
+    padding: 10px 30px;
+    font-family: Sarala, sans-serif;
+    text-transform: capitalize;
+    font-size: 20px;
+    text-shadow: 0px -3px 1px #AB8686;
 }
-/* sx={{color: "#ffffff", padding: "15px 30px", fontFamily: 'Sarala, sans-serif', textTransform:'capitalize'}} */
+
 
 .TextField{ 
     width: 270px;
