@@ -68,28 +68,32 @@ class ReadResult extends React.Component {
     this.setState({ result: sortedResult, sortByIDAsc: !this.state.sortByIDAsc });
 }
 
-  StyledSortButton = styled(Button)(() => ({
+    StyledSortButton = styled(Button)(() => ({
     backgroundColor: "#FF4B4B",
-    fontSize: "18px",
+    fontSize: "14px",
+    padding: "8px 16px",
     position: "absolute",
-    left: "160px",
-    top: "160px",
+    left: "230px",
+    top: "180px",
   }));
 
-  StyledDateButton = styled(Button)(() => ({
+
+    StyledDateButton = styled(Button)(() => ({
     backgroundColor: "#FF4B4B",
-    fontSize: "18px",
+    fontSize: "14px",
+    padding: "8px 16px",
     position: "absolute",
-    left: "350px",
-    top: "160px",
+    left: "400px",
+    top: "180px",
   }));
 
-  StyledPatientIDButton = styled(Button)(() => ({
+    StyledPatientIDButton = styled(Button)(() => ({
     backgroundColor: "#FF4B4B",
-    fontSize: "18px",
+    fontSize: "14px",
+    padding: "8px 16px",
     position: "absolute",
-    left: "464px",
-    top: "160px",
+    left: "508px",
+    top: "180px",
   }));
 
   StyledViewButton = styled(Button)(() => ({

@@ -22,7 +22,7 @@ export default function UpdateandCheckMedHistory () {
 
     return (
         <div>
-            <Paper elevation={1} sx={{bgcolor: "#408128", marginLeft: 5, marginTop: 10, height: 60, width: "42%", borderRadius: 6}}>
+            <Paper elevation={1} sx={{bgcolor: "#408128", marginLeft: 5, marginTop: 7, height: 60, width: "42%", borderRadius: 6}}>
                 <CardContent>
                     <Typography sx={{ fontSize: 20, textAlign: "center" }} color="white" gutterBottom>
                         Germaine Lajera | 12/03/2022
